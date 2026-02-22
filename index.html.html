@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dharmesh Mode — AI Agent for Founders & Builders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0c0c0e;
+  --paper: #f5f2eb;
+  --warm: #f0ebe0;
+  --accent: #e8401c;
+  --accent2: #f5a623;
+  --mid: #8a8070;
+  --dim: #c8c0b0;
+  --dark: #1a1814;
+  --green: #1a7a4a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE TEXTURE ─── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.5;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(245,242,235,0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--dim);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--mid);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 500 !important;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 80px;
+}
+
+.hero-left {
+  padding: 80px 48px 80px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.eyebrow-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 8vw, 108px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.hero-headline .line2 {
+  color: var(--accent);
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(68px, 7.5vw, 100px);
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--mid);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 28px 0 40px;
+  font-weight: 300;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-sub strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #c8351a;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(232,64,28,0.25);
+}
+
+.btn-ghost {
+  color: var(--ink);
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+}
+
+.btn-ghost:hover { gap: 10px; }
+
+.hero-stats {
+  display: flex;
+  gap: 36px;
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid var(--dim);
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--mid);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ─── HERO RIGHT (AGENT) ─── */
+.hero-right {
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.8s 0.2s ease both;
+}
+
+.hero-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(232,64,28,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 10% 90%, rgba(26,122,74,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.agent-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.agent-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.agent-avatar::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  background: var(--green);
+  border-radius: 50%;
+  border: 2px solid var(--dark);
+}
+
+.agent-info h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #e8e4dc;
+  font-weight: 500;
+}
+
+.agent-info p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 1px;
+}
+
+.agent-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(26,122,74,0.15);
+  border: 1px solid rgba(26,122,74,0.3);
+  color: #4ade80;
+}
+
+/* Chat */
+.agent-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.agent-chat::-webkit-scrollbar { width: 3px; }
+.agent-chat::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.chat-msg {
+  display: flex;
+  gap: 10px;
+  animation: fadeUp 0.3s ease;
+}
+
+.chat-msg.user { flex-direction: row-reverse; }
+
+.chat-ma {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.chat-msg.agent .chat-ma {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.chat-msg.user .chat-ma {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+}
+
+.chat-bubble {
+  max-width: calc(100% - 44px);
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.chat-msg.agent .chat-bubble {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: #d8d4cc;
+  border-top-left-radius: 3px;
+}
+
+.chat-msg.user .chat-bubble {
+  background: rgba(232,64,28,0.12);
+  border: 1px solid rgba(232,64,28,0.2);
+  color: #e8e4dc;
+  border-top-right-radius: 3px;
+}
+
+.chat-bubble strong {
+  color: var(--accent2);
+  font-weight: 500;
+}
+
+.chat-bubble code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: rgba(232,64,28,0.12);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: var(--accent2);
+}
+
+.typing-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  border-top-left-radius: 3px;
+  width: fit-content;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: typeBounce 1.2s infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typeBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Quick chips */
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 20px 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.chip {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: rgba(232,64,28,0.4);
+  color: var(--accent);
+  background: rgba(232,64,28,0.05);
+}
+
+/* Input */
+.agent-input {
+  padding: 14px 20px 18px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  z-index: 2;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 9px 9px 9px 14px;
+  transition: border-color 0.2s;
+}
+
+.input-row:focus-within {
+  border-color: rgba(232,64,28,0.35);
+}
+
+.input-row textarea {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #d8d4cc;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: none;
+  min-height: 20px;
+  max-height: 100px;
+}
+
+.input-row textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+.send {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.send:hover { background: #c8351a; }
+.send:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* API prompt bar */
+.api-bar {
+  background: rgba(232,64,28,0.08);
+  border: 1px solid rgba(232,64,28,0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.api-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #d8d4cc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.api-bar input::placeholder { color: rgba(255,255,255,0.2); }
+
+.api-bar button {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 5px 12px;
+  border-radius: 5px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.api-bar button:hover { background: #c8351a; }
+
+/* ─── FEATURES ─── */
+.features {
+  padding: 100px 48px;
+  background: var(--warm);
+  border-top: 1px solid var(--dim);
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 0.95;
+  margin-bottom: 60px;
+}
+
+.section-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--dim);
+  border: 1px solid var(--dim);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.feature-card {
+  background: var(--paper);
+  padding: 36px 32px;
+  transition: background 0.2s;
+}
+
+.feature-card:hover { background: var(--warm); }
+
+.feature-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: var(--dim);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.feature-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+.feature-desc {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ─── FRAMEWORKS ─── */
+.frameworks {
+  padding: 100px 48px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.frameworks .section-label { color: var(--accent2); }
+
+.frameworks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.fw-card {
+  background: var(--dark);
+  padding: 36px 32px;
+  transition: background 0.2s;
+}
+
+.fw-card:hover { background: rgba(255,255,255,0.02); }
+
+.fw-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(232,64,28,0.1);
+  border: 1px solid rgba(232,64,28,0.2);
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.06em;
+}
+
+.fw-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+  color: var(--paper);
+}
+
+.fw-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.fw-quote {
+  margin-top: 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--accent2);
+  line-height: 1.5;
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  padding: 120px 48px;
+  text-align: center;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: 'D';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 600px;
+  color: rgba(0,0,0,0.025);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.cta-section h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 0.95;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.cta-section h2 em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.cta-section p {
+  font-size: 16px;
+  color: var(--mid);
+  max-width: 440px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  position: relative;
+}
+
+.cta-section .btn-primary {
+  font-size: 15px;
+  padding: 16px 36px;
+  position: relative;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 32px 48px;
+  border-top: 1px solid var(--dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--warm);
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--mid);
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { min-height: 500px; }
+  nav { padding: 16px 24px; }
+  .hero-left { padding: 60px 24px 48px; }
+  .features, .frameworks, .cta-section { padding: 60px 24px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .frameworks-grid { grid-template-columns: 1fr; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">DHARMESH<span>.</span>MODE</a>
+  <div class="nav-links">
+    <a href="#features">How it works</a>
+    <a href="#frameworks">Frameworks</a>
+    <a href="#agent">Try it</a>
+    <a href="#agent" class="nav-cta">Launch Agent →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-dot"></div>
+      <span class="eyebrow-text">AI Agent · Prompt Architect · Product Thinker</span>
+    </div>
+
+    <h1 class="hero-headline">
+      THINK IN<br>
+      <span class="line2">Systems.</span><br>
+      BUILD IN<br>LOOPS.
+    </h1>
+
+    <p class="hero-sub">
+      An AI agent powered by <strong>Dharmesh Shah's mental models</strong> — for founders and builders who want to design better prompts, architect agentic workflows, and ship AI-native products.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#agent" class="btn-primary">Try the Agent →</a>
+      <a href="#frameworks" class="btn-ghost">See the frameworks ↓</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">4</div>
+        <div class="stat-label">Core Frameworks</div>
+      </div>
+      <div>
+        <div class="stat-val">∞</div>
+        <div class="stat-label">Context Window</div>
+      </div>
+      <div>
+        <div class="stat-val">0</div>
+        <div class="stat-label">Generic Advice</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMBEDDED AGENT -->
+  <div class="hero-right" id="agent">
+    <div class="agent-header">
+      <div class="agent-avatar">D</div>
+      <div class="agent-info">
+        <h3>Dharmesh Mode</h3>
+        <p>claude-sonnet-4-6 · systems thinker</p>
+      </div>
+      <span class="agent-badge">● Live</span>
+    </div>
+
+    <div class="agent-chat" id="agentChat">
+      <div class="chat-msg agent">
+        <div class="chat-ma">D</div>
+        <div class="chat-bubble">
+          Good. You're here. Let's skip the pleasantries.<br><br>
+          Tell me what you're building — a prompt, an agent, a product idea. I'll apply the frameworks and give you something you can actually use. <strong>What's the problem?</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-chips" id="quickChips">
+      <button class="chip" onclick="chipSend(this)">Design an agentic workflow</button>
+      <button class="chip" onclick="chipSend(this)">Critique my prompt</button>
+      <button class="chip" onclick="chipSend(this)">Build an AI-native product</button>
+      <button class="chip" onclick="chipSend(this)">Evaluate AI output quality</button>
+    </div>
+
+    <div class="api-bar" id="apiBar">
+      <input type="password" id="keyInput" placeholder="Paste Anthropic API key to activate (sk-ant-...)">
+      <button onclick="activateKey()">Activate</button>
+    </div>
+
+    <div class="agent-input">
+      <div class="input-row">
+        <textarea id="agentInput" placeholder="Ask about prompts, agents, AI products..." rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)" disabled></textarea>
+        <button class="send" id="sendBtn" onclick="sendMsg()" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">// what it does</div>
+  <h2 class="section-title">Built for builders<br>who <em>ship.</em></h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-num">01</div>
+      <div class="feature-title">Prompt Engineering</div>
+      <div class="feature-desc">Paste any prompt and get a rigorous critique — then a rewritten version that's 10x clearer, more constrained, and actually production-ready.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">02</div>
+      <div class="feature-title">Agent Architecture</div>
+      <div class="feature-desc">Design multi-step AI workflows with proper loop design, failure handling, tool boundaries, and human-in-the-loop checkpoints where they matter.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">03</div>
+      <div class="feature-title">Output Evaluation</div>
+      <div class="feature-desc">Get a rubric-based eval of any AI output — scored on accuracy, tone, instruction-following, and failure modes — with concrete improvements.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">04</div>
+      <div class="feature-title">Product Thinking</div>
+      <div class="feature-desc">Stress-test AI product ideas using the DRIP framework and smallest-lovable-product philosophy. Find the moat before you build the feature.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">05</div>
+      <div class="feature-title">Founder Frameworks</div>
+      <div class="feature-desc">Dharmesh's mental models — from network effects to AI-native design — applied directly to your specific situation, not as theory but as decisions.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">06</div>
+      <div class="feature-title">Direct & Opinionated</div>
+      <div class="feature-desc">No corporate hedging. No generic lists. Opinions backed by frameworks, delivered with the directness founders need when they're building fast.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORKS -->
+<section class="frameworks" id="frameworks">
+  <div class="section-label">// the mental models</div>
+  <h2 class="section-title" style="color:var(--paper)">The frameworks<br>under the hood.</h2>
+  <div class="frameworks-grid">
+    <div class="fw-card">
+      <div class="fw-tag">PROMPT ENGINEERING</div>
+      <div class="fw-title">ROLE × CONTEXT × TASK × OUTPUT</div>
+      <div class="fw-desc">Every great prompt has four layers. Most people only write the Task. The agent enforces all four — and adds constraints to prevent the most common failure modes.</div>
+      <div class="fw-quote">"A prompt is a product spec for a one-shot software system."</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-tag">AGENT DESIGN</div>
+      <div class="fw-title">PERCEIVE → REASON → ACT → OBSERVE</div>
+      <div class="fw-desc">The agent loop that actually holds up in production. Design each step with its own failure handling, minimum permissions, and explicit exit conditions.</div>
+      <div class="fw-quote">"Agents fail at boundaries. Design for the seams."</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-tag">PRODUCT THINKING</div>
+      <div class="fw-title">THE DRIP FRAMEWORK</div>
+      <div class="fw-desc">Delightful, Remarkable, Insightful, Personalized. AI-native products rethink the workflow entirely — they don't bolt AI onto existing UX patterns.</div>
+      <div class="fw-quote">"The best software doesn't feel like software."</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-tag">EVALUATION</div>
+      <div class="fw-title">BUILD EVALS BEFORE FEATURES</div>
+      <div class="fw-desc">Measure accuracy, relevance, tone-fit, instruction-following, and graceful failure. Test edge cases, not happy paths. Real users are creative in their dysfunction.</div>
+      <div class="fw-quote">"You can't improve what you don't measure."</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>STOP PROMPTING.<br>START <em>Engineering.</em></h2>
+  <p>The agent is live, free to try, and brutally honest. Bring a real problem and leave with something you can ship.</p>
+  <a href="#agent" class="btn-primary">Launch the Agent →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DHARMESH<span>.</span>MODE</div>
+  <div class="footer-note">Powered by Claude Sonnet · Built with Anthropic API · Not affiliated with Dharmesh Shah</div>
+</footer>
+
+<script>
+let apiKey = '';
+let history = [];
+let loading = false;
+
+const SYSTEM = `You are an AI agent deeply informed by Dharmesh Shah's thinking — co-founder of HubSpot, investor, and one of the clearest thinkers on software, startups, and now AI.
+
+You do NOT pretend to be Dharmesh. Instead, you reason using his mental models and occasionally surface relevant quotes or frameworks he's known for.
+
+## Core Mental Models You Apply
+
+**On Prompts:**
+- A prompt is a product spec for a one-shot software system. Treat it with that rigor.
+- The best prompts: define the ROLE clearly, set CONTEXT generously, specify the OUTPUT format precisely, and add CONSTRAINTS that prevent common failure modes.
+- Always ask: what would a bad output look like? Then add constraints to prevent it.
+- Prompt quality = (clarity of task) × (quality of context) × (output specification) ÷ (ambiguity)
+
+**On Agentic AI:**
+- Agents fail at boundaries — between tools, between steps, between contexts. Design for those seams.
+- The agent loop: Perceive → Reason → Act → Observe → Repeat. Each step needs its own failure handling.
+- Reliability > Capability. A 95% reliable simple agent beats a 70% reliable complex one.
+- Give agents the minimum permissions they need. Principle of least capability.
+- Human-in-the-loop isn't a weakness, it's a feature for high-stakes decisions.
+
+**On Products & AI:**
+- "The best software doesn't feel like software." → AI agents should feel inevitable, not impressive.
+- Prioritize Remarkably Good over merely good. DRIP framework: Delightful, Remarkable, Insightful, Personalized.
+- AI-native products rethink the workflow entirely — they don't bolt AI onto existing UX.
+
+**On Evaluation:**
+- "You can't improve what you don't measure." For AI: build evals before you build features.
+- Test for edge cases, not just happy paths.
+- Evaluate on: accuracy, relevance, tone-fit, instruction-following, and failure gracefully.
+
+## Your Behavior
+- Lead with frameworks and structured thinking
+- Use occasional short quotes attributed to Dharmesh when highly relevant (max 1-2 per response)
+- Be direct, opinionated, and a little witty — but never preachy
+- When helping with prompts, always provide the ACTUAL improved prompt text
+- When designing agents, provide concrete architecture steps
+- Push back if the question assumes something flawed
+- Be substantive and dense with insight, not verbose`;
+
+function activateKey() {
+  const val = document.getElementById('keyInput').value.trim();
+  if (!val.startsWith('sk-')) {
+    document.getElementById('keyInput').style.borderColor = 'rgba(232,64,28,0.6)';
+    document.getElementById('keyInput').placeholder = 'Invalid key format — must start with sk-ant-...';
+    return;
+  }
+  apiKey = val;
+  document.getElementById('apiBar').style.display = 'none';
+  document.getElementById('agentInput').disabled = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('agentInput').focus();
+  addMsg('agent', 'API key connected. Now we\'re talking. What are you building?');
+}
+
+function chipSend(el) {
+  document.getElementById('agentInput').value = el.textContent;
+  document.getElementById('quickChips').style.display = 'none';
+  sendMsg();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function addMsg(role, html) {
+  const chat = document.getElementById('agentChat');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `
+    <div class="chat-ma">${role === 'agent' ? 'D' : 'U'}</div>
+    <div class="chat-bubble">${html}</div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const chat = document.getElementById('agentChat');
+  const div = document.createElement('div');
+  div.id = 'typing';
+  div.className = 'chat-msg agent';
+  div.innerHTML = `<div class="chat-ma">D</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function fmt(text) {
+  return text
+    .replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:6px;margin:8px 0;font-family:JetBrains Mono,monospace;font-size:11px;color:#a8e6cf;overflow-x:auto"><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^#{1,3} (.+)$/gm, '<strong style="display:block;margin:12px 0 4px;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.7)">$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^> (.+)$/gm, '<div style="border-left:2px solid var(--accent);padding-left:10px;margin:8px 0;font-style:italic;color:var(--accent2)">$1</div>')
+    .replace(/^[-•] (.+)$/gm, '<div style="padding-left:14px;position:relative;margin:3px 0">· $1</div>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+async function sendMsg() {
+  if (!apiKey) { document.getElementById('apiBar').scrollIntoView({behavior:'smooth'}); return; }
+  const input = document.getElementById('agentInput');
+  const text = input.value.trim();
+  if (!text || loading) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  loading = true;
+  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('quickChips').style.display = 'none';
+
+  addMsg('user', text.replace(/\n/g, '<br>'));
+  history.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: SYSTEM,
+        messages: history
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+
+    const reply = data.content[0].text;
+    history.push({ role: 'assistant', content: reply });
+    removeTyping();
+    addMsg('agent', fmt(reply));
+  } catch(err) {
+    removeTyping();
+    addMsg('agent', `<span style="color:#ff6b6b">Error: ${err.message}</span>`);
+  }
+
+  loading = false;
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>
